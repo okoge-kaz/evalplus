@@ -45,7 +45,9 @@ class HuggingFaceDecoder(DecoderBase):
         self.tokenizer = AutoTokenizer.from_pretrained(name, **tokenizer_kwargs)
         if self.is_direct_completion():  # no chat template
             self.eos += extra_eos_for_direct_completion(dataset)
+            print(f"LOG: extra eos for direct completion: {self.eos}")
         else:  # with chat template
+            print(f"LOG: No extra eos for chat template: {self.eos}")
             self.eos += ["\n```\n"]
 
         print(f"{self.eos = }")

@@ -40,8 +40,10 @@ class VllmDecoder(DecoderBase):
         self.tokenizer = AutoTokenizer.from_pretrained(self.name, **tokenizer_kwargs)
         if self.is_direct_completion():
             self.eos += extra_eos_for_direct_completion(dataset)
+            print(f"LOG: extra eos for direct completion: {self.eos}")
         else:
             self.eos += ["\n```\n"]
+            print(f"LOG: No extra eos for chat template: {self.eos}")
         self.llm = LLM(model=name, max_model_len=2048, **kwargs)
 
     def is_direct_completion(self) -> bool:
