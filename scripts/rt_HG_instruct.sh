@@ -15,6 +15,8 @@ cd $PBS_O_WORKDIR
 echo "Nodes allocated to this job:"
 cat $PBS_NODEFILE
 
+: "${MODEL_NAME:?MODEL_NAME is not set. Submit with: qsub -v MODEL_NAME=... bigcodebench_eval.pbs}"
+
 # environment variables
 export TMP="/groups/gag51395/fujii/tmp"
 export TMP_DIR="/groups/gag51395/fujii/tmp"
@@ -22,12 +24,9 @@ export HF_HOME="/groups/gag51395/fujii/hf_cache"
 
 source .venv/bin/activate
 
-MODEL_NAME="tokyotech-llm/Llama-3.1-8B-swallow-code-v2-exp8-iter0002500"
-
 export CUDA_VISIBLE_DEVICES=0
 evalplus.evaluate --model $MODEL_NAME \
                   --dataset humaneval \
                   --backend vllm      \
                   --tp 1              \
-                  --greedy            \
-                  --force-base-prompt
+                  --greedy
